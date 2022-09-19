@@ -1,0 +1,43 @@
+table.table.table-subscribers td,
+table.table.table-subscribers thead tr.filters th {
+    vertical-align: middle;
+    padding: 0.2rem;
+}
+
+table.table.table-subscribers tr.filters .input-filter-subscribersTable {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    padding: 0.2rem 0.5rem;
+    height: 1.5rem;
+}
+
+table.table.table-subscribers tr.filters th {
+    font-weight:400;
+}
+
+table.table.table-subscribers tr.filters .input-filter-subscribersTable.filter-applied {
+    background-color: #007bff;
+    border-color: #006fe6;
+    color: #ffffff;
+}
+
+input.input-filter-subscribersTable[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 0.7em;
+    width: 0.7em;
+    margin-left:0.2rem;
+    background: url("../../img/times.svg") no-repeat 50% 50%;
+    background-size: contain;
+    cursor:pointer;
+    opacity:0.7;
+}
+
+input.input-filter-subscribersTable[type="search"]::-webkit-search-cancel-button:hover {
+    opacity:1;
+}
+
+table.table.table-subscribers tr td:last-child,
+table.table.table-subscribers tr:first-child th:last-child{
+    padding: 0.2rem;
+    vertical-align: middle;
+}

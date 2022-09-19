@@ -1,0 +1,40 @@
+ul.subscribe_form_tabs > li.nav-item > a.nav-link {
+    border-top: 3px solid transparent;
+}
+
+ul.subscribe_form_tabs > li.nav-item > a.nav-link:hover {
+    border-top-color: #dee2e6;
+}
+
+ul.subscribe_form_tabs > li.nav-item > a.nav-link.active {
+    border-top-color: #007bff;
+    background-color: transparent;
+    border-bottom-color: #f4f6f9;
+}
+
+/* Блок кнопок формы внизу экрана появляющийся при изменении полей - Начало */
+#sending_form_actions {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 1032;
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    color: #869099;
+    padding: 1rem;
+    margin-left:250px;
+    transition: margin-left, bottom .3s ease-in-out;
+}
+
+body.sidebar-collapse #sending_form_actions {
+    margin-left: 4.6rem;
+}
+
+@media (max-width: 991.98px){
+    #sending_form_actions,
+    body.sidebar-collapse #sending_form_actions {
+        margin-left: 0;
+    }
+}
+/* Блок кнопок формы внизу экрана появляющийся при изменении полей - Конец */

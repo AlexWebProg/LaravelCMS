@@ -1,0 +1,117 @@
+/* Расположение flex-элемента вверху */
+.align-self-start {
+    align-self: start;
+}
+
+/* Кнопка выхода из ПУ в шапке */
+.exit_button{
+    max-width:250px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Указатель - курсор */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Таблица DataTable на всю ширину card */
+.card-body.pl-0.pr-0 .dataTables_filter,
+.card-body.pl-0.pr-0 .dataTables_info {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+/* Количество строк в ячейке базовой таблицы ПУ не больше 2-х */
+table.basic_table tbody tr td div.rowLimit {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+/* Текст в ячейке базовой таблицы ПУ выровнен по середине по вертикали */
+table.basic_table tbody tr td {
+    vertical-align: middle;
+}
+/* В базовой таблице мелкий текст и отступы, подсветка оранжевым*/
+table.table.basic_table {
+    width:100%;
+}
+table.table.basic_table td,
+table.table.basic_table th {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    text-align: center;
+}
+table.table.basic_table > tbody > tr:hover > td,
+table.table.basic_table > tbody > tr.active:hover > td {
+    background-color: #fee4cd;
+    box-shadow: none;
+}
+table.table.basic_table > tbody > tr.active > td {
+    background-color: #dbe8f9;
+}
+table.table.basic_table td {
+    vertical-align: middle;
+    padding: 0.2rem 0.5rem;
+}
+
+/* Поле ввода файла */
+.custom-file-input:lang(en)~.custom-file-label::after {content: "...";}
+
+/* Форма с сортируемыми строками (например, Параметры подписок) - Начало */
+.form_sortable_rows_header {
+    border-bottom: 2px solid #dee2e6;
+    font-weight: bold;
+    padding: 0.75rem 0;
+}
+
+.form_sortable_rows > div.row {
+    vertical-align:middle;
+    padding: 0.75rem 0;
+}
+.form_sortable_rows > div.row > div,
+.form_sortable_rows > div.row > div > .checkbox-ios {
+    line-height:28px;
+}
+
+.form_sortable_rows > div.row.sorting_now {
+    background-color:rgba(255,255,255, 0.8);
+}
+
+.add_item_button_block {
+    border-top: 1px solid #dee2e6;
+    padding: 0.75rem 0 0 0;
+}
+/* Форма с сортируемыми строками (например, Параметры подписок) - Конец */
+
+/* Блок кнопок формы внизу экрана появляющийся при изменении полей - Начало */
+#form_actions {
+    bottom: -80px;
+    left: 0;
+    position: fixed;
+    right: 0;
+    z-index: 1032;
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    color: #869099;
+    padding: 1rem;
+    margin-left:250px;
+    transition: margin-left, bottom .3s ease-in-out;
+}
+
+body.sidebar-collapse #form_actions {
+    margin-left: 4.6rem;
+}
+
+@media (max-width: 991.98px){
+    #form_actions,
+    body.sidebar-collapse #form_actions {
+        margin-left: 0;
+    }
+}
+/* Блок кнопок формы внизу экрана появляющийся при изменении полей - Конец */
+
