@@ -45,6 +45,7 @@ class StoreRequest extends FormRequest
             'status' => 'required|string|in:Активна,Заморожена,Отменена',
             'user_id' => 'required|integer|exists:mysql_no_prefix.loncq_user,user_id,subscriber,1',
             'next_send_month' => ['sometimes', 'required_if:status,Активна', new DateMonthYear],
+            'subscribe_tilda_id' => 'sometimes|integer|exists:mysql_no_prefix.loncq_subscribe_tilda,id,processed,0',
         ]);
     }
 
@@ -60,6 +61,8 @@ class StoreRequest extends FormRequest
             'status.in' => 'Присваиваемый подписке статус должен быть: Активна,Заморожена или Отменена',
 
             'next_send_month.required_if' => 'Это поле необходимо заполнить',
+
+            'subscribe_tilda_id.exists' => 'Заказ из Тильды, на основе которого создаётся подписка, уже обработан: на его основе уже была создана другая подписка'
         ]);
     }
 }

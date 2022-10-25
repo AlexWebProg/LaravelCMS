@@ -25,8 +25,7 @@ $(document).ready(function () {
         info: true,
         searching: true,
         responsive: false,
-        scrollX: true,
-        scrollCollapse: true,
+        bAutoWidth: false,
         fixedHeader: true,
         columns: [
             null,
@@ -42,8 +41,6 @@ $(document).ready(function () {
                 orderable: false,
                 searchable: false
             },
-
-
         ],
         orderCellsTop: true,
         order: [[ 0, "desc" ]],
@@ -104,6 +101,12 @@ $(document).ready(function () {
     $('.filter_cancel').click(function(){
         subscribersTable.state.clear();
         window.location.reload();
+    });
+
+    $(document).on('collapsed.lte.pushmenu shown.lte.pushmenu', function () {
+        setTimeout(function () {
+            subscribersTable.fixedHeader.adjust();
+        }, 500);
     });
 
     $('.dataTables_empty').attr('colspan','18');

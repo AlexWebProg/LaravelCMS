@@ -51,7 +51,11 @@ class SendController extends BaseController
             $subscribe = Subscribe::find($intSubscribeId);
             $arResult = $this->service->sendSubscribe($subscribe,$arSendData);
             if (empty($arResult['intResult'])) {
-                $arErrors = $arErrors + $arResult['arErrors'];
+                if (!empty($arResult['arErrors']) and count($arResult['arErrors'])) {
+                    foreach ($arResult['arErrors'] as $strError) {
+                        $arErrors[] = $strError;
+                    }
+                }
             } else {
                 $bGotSent = true;
             }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use App\Models\SubRequest;
 use App\Models\SubscribeSettings;
+use App\Models\Subscribe;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         // Передаём во все view основную информацию о заявках
         View::share('arSubRequestBasicInfo', SubRequest::getSubRequestsBasicInfo());
 
-        // Передаём во все view типы параметров подписок
-        View::share('arSubscribeSettingsTypes', SubscribeSettings::getTypes());
+        // Передаём во все view рабочие месяцы
+        View::share('arPlannedDataLine', Subscribe::getPlannedDataLine());
     }
 }

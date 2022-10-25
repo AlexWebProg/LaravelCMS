@@ -91,4 +91,32 @@ class SubscribeSettings extends Model
         return self::$arTypes;
     }
 
+    // Состав типа подписки
+    public function subscribeTypeConsist() {
+        return $this->belongsToMany(
+            SubscribeProduct::class,
+            'loncq_subscribe_type_consist',
+            'subscribe_type_id',
+            'product_id')
+            ->withPivot('qnt', 'month', 'sort')
+            ->orderByPivot('sort');
+    }
+
+    // Состав типа подписки по месяцу
+    public function subscribeTypeConsistByMonth($month) {
+        return $this->subscribeTypeConsist->filter(function ($subscribeTypeProduct) use ($month) {
+            return $subscribeTypeProduct->pivot->month === $month;
+        })->values();
+        /*return $this->belongsToMany(
+            SubscribeProduct::class,
+            'loncq_subscribe_type_consist',
+            'subscribe_type_id',
+            'product_id')
+            ->withPivot('qnt', 'month')
+            ->wherePivot('month',$month)
+            ->orderByPivot('sort')
+            ->get();*/
+    }
+
+
 }

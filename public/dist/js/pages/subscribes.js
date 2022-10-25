@@ -459,42 +459,45 @@ function toggleActiveRow(checkbox){
     }
 }
 
-// Отправка подписок: форма отправки
-content_wrapper.on('click','#showSendFormBtn',function(){
-    $('#sendFormModal').modal('show');
-    let form = $('#sendForm');
-    form.find('.sendForm_subscribe_id').remove();
+// Сборка подписок: форма сборки
+content_wrapper.on('click','#showAssemblyFormBtn',function(){
+    $('#assemblyFormModal').modal('show');
+    let form = $('#assemblyForm');
+    form.find('.assemblyForm_subscribe_id').remove();
     $.each($('input.subscribe_checkbox:checked'), function(){
-        form.append('<input type="hidden" class="sendForm_subscribe_id" name="subscribe_id[]" value="' + $(this).val() + '" />');
+        form.append('<input type="hidden" class="assemblyForm_subscribe_id" name="subscribe_id[]" value="' + $(this).val() + '" />');
     });
 });
 $().ready(function () {
-    // Дата отправки
-    $('#sending_date').datetimepicker({
-        locale: 'ru',
-        format: 'DD.MM.YYYY HH:mm',
-        sideBySide: true
-    });
-    // Месяц, за который выполняется отправка
-    $('#sent_month').datetimepicker({
+    // Месяц, за который выполняется сборка
+    $('#assembly_month').datetimepicker({
         locale: 'ru',
         format: 'MMMM YYYY'
     });
 });
 
-// Отправка подписок
+// Сборка подписок
 $(function() {
-    $("#sendForm").on("submit", function() {
-        $("#sendForm .text-danger").remove();
-        $("#sendForm .is-invalid").removeClass('is-invalid');
+    $("#assemblyForm").on("submit", function() {
+        $("#assemblyForm .text-danger").remove();
+        $("#assemblyForm .is-invalid").removeClass('is-invalid');
         $.post($(this).attr("action"), $(this).serialize(), function(data) {
-            window.location.reload();
+            if (parseInt(data.result,10) === 1) {
+                location.href = data.redirect;
+            } else {
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    icon: 'fa fa-exclamation-triangle fa-lg',
+                    title: 'Ошибка',
+                    body: data.message
+                });
+            }
         }).fail(function(response) {
             let erroJson = response.responseJSON.errors,
                 arErrors = [];
             for (let err in erroJson) {
                 for (let errstr of erroJson[err]) {
-                    let input = $("#sendForm [name='" + err + "']");
+                    let input = $("#assemblyForm [name='" + err + "']");
                     if (input.length > 0) {
                         input.addClass('is-invalid').after("<div id='" + err + "_error' class='text-danger'>" + errstr + "</div>");
                     } else {
@@ -514,6 +517,7 @@ $(function() {
         return false;
     });
 });
+
 
 // Экспорт в excel
 content_wrapper.on('click','#excelExportBtn',function(){

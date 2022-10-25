@@ -50,6 +50,8 @@ class SubscribeHistory extends Model
         $history_header = $this->type;
         if ($this->type === 'Отправка' && !empty($this->info->{'Эта отправка'}->{'Месяц, за который выполнена отправка'})) {
             $history_header .= ' за ' . $this->info->{'Эта отправка'}->{'Месяц, за который выполнена отправка'};
+        } elseif (in_array($this->type,['Сборка','Изменение сборки']) && !empty($this->info->{'Эта сборка'}->{'Месяц, за который выполнена сборка'})) {
+            $history_header .= ' за ' . $this->info->{'Эта сборка'}->{'Месяц, за который выполнена сборка'};
         }
         return $history_header;
     }
@@ -71,6 +73,10 @@ class SubscribeHistory extends Model
                 break;
             case 'Активация':
                 return 'fa-check bg-green';
+                break;
+            case 'Сборка':
+            case 'Изменение сборки':
+                return 'fa-archive bg-blue';
                 break;
             default:
                 return 'fa-clock-o bg-gray';

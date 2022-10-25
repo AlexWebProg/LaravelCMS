@@ -9,6 +9,7 @@ class IndexController extends Controller
 {
     public function __invoke($type = 'periodicity')
     {
+        $arSubscribeSettingsTypes = SubscribeSettings::getTypes();
         $pageTitle = 'Параметры подписок';
         foreach (SubscribeSettings::getTypes() as $arType) {
             if ($arType['code'] == $type) {
@@ -20,7 +21,7 @@ class IndexController extends Controller
             ->orderBy('sort')
             ->orderBy('value')
             ->get();
-        return view('admin.subscribeSettings.index', compact('subscribeSettings', 'pageTitle', 'type'));
+        return view('admin.subscribeSettings.index', compact('subscribeSettings', 'pageTitle', 'type', 'arSubscribeSettingsTypes'));
 
     }
 }

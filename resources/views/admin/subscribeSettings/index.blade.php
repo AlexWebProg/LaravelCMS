@@ -1,5 +1,39 @@
 @extends('admin.layouts.main')
 
+@section('submenu')
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <div class="col-12 d-flex p-0">
+            <ul class="nav nav-pills">
+                @foreach($arSubscribeSettingsTypes as $arSubscribeSettingsType)
+                    @if (!str_contains($arSubscribeSettingsType['code'],'size_'))
+                        <li class="nav-item">
+                            <a href="{{ route('admin.subscribeSettings.index', $arSubscribeSettingsType['code']) }}" class="nav-link {{ (request()->route()->named('admin.subscribeSettings.*') && request()->route()->parameters['type'] == $arSubscribeSettingsType['code']) ? 'active' : '' }}">
+                                <i class="{{ $arSubscribeSettingsType['icon'] }} nav-icon" aria-hidden="true"></i>
+                                {{ $arSubscribeSettingsType['short_name'] }}
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle {{ (request()->route()->named('admin.subscribeSettings.*') && str_contains(request()->route()->parameters['type'],'size_')) ? 'active' : '' }}" data-toggle="dropdown" href="#">
+                        Размеры <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        @foreach($arSubscribeSettingsTypes as $arSubscribeSettingsType)
+                            @if (str_contains($arSubscribeSettingsType['code'],'size_'))
+                                <a class="dropdown-item {{ (request()->route()->named('admin.subscribeSettings.*') && request()->route()->parameters['type'] == $arSubscribeSettingsType['code']) ? 'active' : '' }}" tabindex="-1" href="{{ route('admin.subscribeSettings.index', $arSubscribeSettingsType['code']) }}">
+                                    <i class="{{ $arSubscribeSettingsType['icon'] }} nav-icon" aria-hidden="true"></i>
+                                    {{ $arSubscribeSettingsType['short_name'] }}
+                                </a>
+                            @endif
+                        @endforeach
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+@endsection
+
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -10,6 +44,7 @@
                     <h1 class="mt-0">{{ $pageTitle }}</h1>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin.main') }}">Главная</a></li>
+                        <li class="breadcrumb-item active">Подписки</li>
                         <li class="breadcrumb-item active">{{ $pageTitle }}</li>
                     </ol>
                 </div>

@@ -1,4 +1,7 @@
 <?php
+
+use Carbon\Carbon;
+
 if (!function_exists('phoneMask')) {
     function phoneMask($phone) {
         preg_match('/(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})/', $phone, $matches);
@@ -52,5 +55,19 @@ if (!function_exists('assetVersioned')) {
     function assetVersioned($path)
     {
         return asset($path) . '?' . @filemtime(public_path($path)) ?: 0;
+    }
+}
+
+if (!function_exists('monthIntToStr')) {
+    function monthIntToStr($intMonth)
+    {
+        return Carbon::parse('01.'.$intMonth)->isoFormat('MMMM YYYY');
+    }
+}
+
+if (!function_exists('monthStrToInt')) {
+    function monthStrToInt($strMonth)
+    {
+        return Carbon::createFromLocaleIsoFormat('!MMMM YYYY', 'ru', $strMonth, null)->format('m.Y');
     }
 }

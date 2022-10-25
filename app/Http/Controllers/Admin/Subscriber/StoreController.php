@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Subscriber;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Subscriber\StoreRequest;
-use App\Models\Subscriber;
 
 class StoreController extends BaseController
 {

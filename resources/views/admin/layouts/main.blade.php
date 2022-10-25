@@ -84,6 +84,8 @@
     </nav>
     <!-- /.navbar -->
 
+    @yield('submenu')
+
     @include('admin.includes.sidebar')
     @yield('content')
 
@@ -104,7 +106,7 @@
                         @endif
                     </div>
                     <div class="ml-2 mr-2">
-                        {{ session('notification')['message'] }}
+                        {!! session('notification')['message'] !!}
                     </div>
                     <div class="align-self-start">
                         <button data-dismiss="toast" type="button" class="close" aria-label="Close" onclick="$(this).closest('.toast').toast('hide');">

@@ -33,7 +33,8 @@ class ExcelExportController extends BaseController
             'Мейл',
             'Телефон',
             'Учёт предпочтений',
-            'Исключить'
+            'Исключить',
+            'Наш комментарий'
         ];
         foreach($arPlannedDataLine as $arPlannedSendMonth) {
             $arHeadings[] = $arPlannedSendMonth['str'];
@@ -60,6 +61,7 @@ class ExcelExportController extends BaseController
                 $subscribe->subscriber->phone_str,
                 empty($subscribe->pref_acc_id) ? '-' : $subscribe->prefAccSetting->value,
                 empty($subscribe->exclude) ? '-' : $subscribe->exclude,
+                empty($subscribe->comment_manager) ? '-' : $subscribe->comment_manager
             ];
             foreach($arPlannedDataLine as $arPlannedSendMonth) {
                 $arRow[] = $subscribe->estimated_sends_month_days[$arPlannedSendMonth['int']];

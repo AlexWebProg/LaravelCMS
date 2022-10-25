@@ -12,9 +12,10 @@ use \Maatwebsite\Excel\Writer;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 use Maatwebsite\Excel\Concerns\WithDefaultStyles;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
 class SubscribesExcelExport implements FromArray,
-    WithHeadings, WithColumnFormatting, WithDefaultStyles, ShouldAutoSize, WithEvents
+    WithHeadings, WithColumnFormatting, WithDefaultStyles, ShouldAutoSize, WithEvents, WithColumnWidths
 {
 
     protected $arHeadings;
@@ -29,6 +30,14 @@ class SubscribesExcelExport implements FromArray,
     public function array(): array
     {
         return $this->arData;
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'I' => 25,
+            'J' => 25,
+        ];
     }
 
 

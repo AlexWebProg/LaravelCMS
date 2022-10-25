@@ -95,15 +95,20 @@ class ImportSubscribesInitialCommand extends Command
                     ];
                     // Подписка
                     $strNextSendMonth = NULL;
+                    $strMonthSendDates = NULL;
                     if ($arRow['status'] == 'Активна') {
                         if ($arRow[19] != '-') {
                             $strNextSendMonth = 'сентябрь 2022';
+                            $strMonthSendDates = $arRow[19];
                         } elseif ($arRow[20] != '-') {
                             $strNextSendMonth = 'октябрь 2022';
+                            $strMonthSendDates = $arRow[20];
                         } elseif ($arRow[21] != '-') {
                             $strNextSendMonth = 'ноябрь 2022';
+                            $strMonthSendDates = $arRow[21];
                         } elseif ($arRow[22] != '-') {
                             $strNextSendMonth = 'декабрь 2022';
+                            $strMonthSendDates = $arRow[22];
                         }
                     }
                     $arSentMonth = [];
@@ -128,7 +133,7 @@ class ImportSubscribesInitialCommand extends Command
                         'size_foot_id' => $arSettings['size_foot'][trim($arRow[27])],
                         'subscribe_type_id' => $arSettings['subscribe_type'][trim($arRow[23])],
                         'status' => $arRow['status'],
-                        'send_dates_id' => ($arRow[19] == 27) ? $arSettings['send_dates']['с 27 по 3'] : $arSettings['send_dates']['с 13 по 20'],
+                        'send_dates_id' => ($strMonthSendDates == 27) ? $arSettings['send_dates']['с 27 по 3'] : $arSettings['send_dates']['с 13 по 20'],
                         'exclude' => (trim($arRow[7]) == '-') ? NULL : trim($arRow[7]),
                         'comment_manager' => (trim($arRow[8]) == '') ? NULL : trim($arRow[8]),
                         'comment_subscriber' => (trim($arRow[30]) == '') ? NULL : trim($arRow[30]),
@@ -156,7 +161,7 @@ class ImportSubscribesInitialCommand extends Command
                         $arSubscribe['sum'] = $arRow[3];
                     }
                     $arSubscribes[] = $arSubscribe;
-                    unset($arSubscribe, $strNextSendMonth, $arSentMonth, $intAutoPrice);
+                    unset($arSubscribe, $strNextSendMonth, $arSentMonth, $intAutoPrice, $strMonthSendDates);
                 }
             }
         }

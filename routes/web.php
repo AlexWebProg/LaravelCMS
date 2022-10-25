@@ -48,10 +48,12 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin', 'middleware' => ['aut
         Route::get('/create/chooseSubscriber','ChooseSubscriberController')->name('admin.subscribes.create.chooseSubscriber');
         Route::post('/create/chooseSubscriber','SetSubscriberController')->name('admin.subscribes.create.setSubscriber');
 
-        Route::get('/create/{subscriber}','CreateController')->name('admin.subscribes.create');
+        Route::get('/create/{subscriber}/{orderFromTilda?}','CreateController')->name('admin.subscribes.create');
         Route::put('/create','StoreController')->name('admin.subscribes.store');
 
         Route::post('/excel/export','ExcelExportController')->name('admin.subscribes.excelExport');
+
+        Route::patch('/assemblyMany','AssemblyController@assemblyManySubscribes')->name('admin.subscribes.assemblyMany');
     });
     // Параметры подписок
     Route::group(['namespace' => 'SubscribeSettings', 'prefix' => 'subscribeSettings'], function () {
@@ -67,6 +69,35 @@ Route::group(['namespace' => 'App\Http\Controllers\Admin', 'middleware' => ['aut
         Route::patch('/update/{subscriber}','UpdateController')->name('admin.subscribers.update');
         Route::get('/create','CreateController')->name('admin.subscribers.create');
         Route::put('/create','StoreController')->name('admin.subscribers.create');
+    });
+    // Товары
+    Route::group(['namespace' => 'SubscribeProduct', 'prefix' => 'subscribeProducts'], function () {
+        Route::get('/index','IndexController')->name('admin.subscribeProducts.index');
+        Route::get('/edit/{subscribeProduct}','EditController')->name('admin.subscribeProducts.edit');
+        Route::patch('/update/{subscribeProduct}','UpdateController')->name('admin.subscribeProducts.update');
+        Route::get('/create','CreateController')->name('admin.subscribeProducts.create');
+        Route::put('/create','StoreController')->name('admin.subscribeProducts.create');
+        Route::delete('/{subscribeProduct}','DeleteController')->name('admin.subscribeProducts.delete');
+    });
+    // Состав типов подписок
+    Route::group(['namespace' => 'SubscribeTypeConsist', 'prefix' => 'subscribeTypeConsist'], function () {
+        Route::get('/index/{month}','IndexController')->name('admin.subscribeTypeConsist.index');
+        Route::get('/edit/{subscribeType}/{month}','EditController')->name('admin.subscribeTypeConsist.edit');
+        Route::patch('/update/{subscribeType}/{month}','UpdateController')->name('admin.subscribeTypeConsist.update');
+    });
+    // Сборка подписок
+    Route::group(['namespace' => 'SubscribeConsist', 'prefix' => 'subscribeConsist'], function () {
+        Route::get('/index/{month}','IndexController')->name('admin.subscribeConsist.index');
+        Route::get('index/indexJSON/{month}','IndexJSONController');
+        Route::get('/edit/{subscribe}/{month}','EditController')->name('admin.subscribeConsist.edit');
+        Route::patch('/update/{subscribe}/{month}','UpdateController')->name('admin.subscribeConsist.update');
+        Route::post('/PDFExport/{month}','PDFExportController')->name('admin.subscribeConsist.PDFExport');
+    });
+    // Заявки на подписку из Тильды
+    Route::group(['namespace' => 'SubscribeTilda', 'prefix' => 'subscribeTilda'], function () {
+        Route::get('/index/{processed}','IndexController')->name('admin.subscribeTilda.index');
+        Route::get('/createSubscribe/{orderFromTilda}','CreateSubscribeController')->name('admin.subscribeTilda.createSubscribe');
+        /*Route::get('/show/{order}','ShowController')->name('admin.subscribeTilda.show');*/
     });
     // Тестовые функции
     Route::group(['namespace' => 'Test', 'prefix' => 'test'], function () {

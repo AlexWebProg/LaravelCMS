@@ -26,6 +26,7 @@ class Subscribe extends Model
         'sizeTopSetting', // Размер верх
         'subscribeTypeSetting', // Тип подписки
         'prefAccSetting', // Учёт предпочтений
+        'subscribeConsist', //  Состав подписки
     ];
     protected $appends = [
         'subscribe_cost', // Полная стоимость подписки (с доставкой)
@@ -38,8 +39,9 @@ class Subscribe extends Model
     // Автоматические действия для модели
     protected static function booted()
     {
-        static::saving(function ($subscribe) {
-            // При сохранении подписки пересчитываем дату отправки для подписчика
+        static::saved(function ($subscribe) {
+            // После сохранения подписки пересчитываем дату отправки для подписчика и обновляем её в подписке
+            $subscribe = $subscribe->fresh();
             $subscribe->send_date = $subscribe->next_send_month;
             $nextSendMonthOriginalDate = $subscribe->getAttributes()['next_send_month'];
             if (!empty($nextSendMonthOriginalDate)) {
@@ -74,6 +76,7 @@ class Subscribe extends Model
             } else {
                 $subscribe->send_date = 'нет';
             }
+            $subscribe->updateQuietly(['send_date' => $subscribe->send_date]);
         });
     }
 
@@ -272,20 +275,21 @@ class Subscribe extends Model
     // Получает месяцы на ближайший рабочий срок (ближайшие 6 месяцев)
     public static function getPlannedDataLine(){
         $arPlannedDataLine = [];
-        $lastMonthDateTime = Carbon::now()->subMonth();
+        $strCurrentMonth = '01.'.Carbon::now()->format('m.Y');
+        $lastMonthDateTime = Carbon::parse($strCurrentMonth)->subMonth();
         $arPlannedDataLine[] = [
             'int' => $lastMonthDateTime->format('m.Y'),
             'str' => $lastMonthDateTime->isoFormat('MMMM YYYY')
 
         ];
-        $currentDateTime = Carbon::now();
+        $carbonCurrentMonth = Carbon::parse($strCurrentMonth);
         $arPlannedDataLine[] = [
-            'int' => $currentDateTime->format('m.Y'),
-            'str' => $currentDateTime->isoFormat('MMMM YYYY')
+            'int' => $carbonCurrentMonth->format('m.Y'),
+            'str' => $carbonCurrentMonth->isoFormat('MMMM YYYY')
 
         ];
         for ($i=1; $i <= 5; $i++) {
-            $nextDateTime = Carbon::now()->addMonths($i);
+            $nextDateTime = Carbon::parse($strCurrentMonth)->addMonths($i);
             $arPlannedDataLine[] = [
                 'int' => $nextDateTime->format('m.Y'),
                 'str' => $nextDateTime->isoFormat('MMMM YYYY')
@@ -293,6 +297,24 @@ class Subscribe extends Model
             ];
         }
         return $arPlannedDataLine;
+    }
+
+    // Состав подписки
+    public function subscribeConsist() {
+        return $this->belongsToMany(
+            SubscribeProduct::class,
+            'loncq_subscribe_consist',
+            'subscribe_id',
+            'product_id')
+            ->withPivot('qnt', 'month')
+            ->orderByPivot('sort');
+    }
+
+    // Состав подписки по месяцу
+    public function subscribeConsistByMonth($month) {
+        return $this->subscribeConsist->filter(function ($subscribeProduct) use ($month) {
+            return $subscribeProduct->pivot->month === $month;
+        })->values();
     }
 
 }

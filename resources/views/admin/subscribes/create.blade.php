@@ -27,10 +27,10 @@
             <div class="bs-stepper mb-3">
                 <div class="bs-stepper-header" role="tablist">
                     <div class="step">
-                        <a href="{{ route('admin.subscribes.create.chooseSubscriber') }}" type="button" class="step-trigger pl-0 pt-0 pb-0">
+                        <button onclick="location.href='{{ route('admin.subscribes.create.chooseSubscriber') }}'" type="button" class="step-trigger pl-0 pt-0 pb-0">
                             <span class="bs-stepper-circle">1</span>
                             <span class="bs-stepper-label">Выбор подписчика</span>
-                        </a>
+                        </button>
                     </div>
                     <div class="line"></div>
                     <div class="step active">
@@ -41,6 +41,9 @@
                     </div>
                 </div>
             </div>
+            @error('subscribe_tilda_id')
+            <div class="alert alert-danger" id="subscribe_tilda_id_error">{{ $message }}</div>
+            @enderror
             <form id="main_form" action="{{ route('admin.subscribes.store') }}" method="post" class="pb-5">
                 @csrf
                 @method('put')
@@ -70,7 +73,7 @@
                                     <select id="subscribe_type_id" name="subscribe_type_id" class="form-control custom-select">
                                         <option disabled="">Выберите:</option>
                                         @foreach ($arSettings['subscribe_type'] as $arSubscribeTypeSetting)
-                                            <option data-cost="{{ $arSubscribeTypeSetting->cost }}" value="{{ $arSubscribeTypeSetting->id }}" {{ $arSubscribeTypeSetting->id == old('subscribe_type_id') ? ' selected' : '' }}>{{ $arSubscribeTypeSetting->value }}</option>
+                                            <option data-cost="{{ $arSubscribeTypeSetting->cost }}" value="{{ $arSubscribeTypeSetting->id }}" {{ $arSubscribeTypeSetting->id == old('subscribe_type_id', $arTildaOrderSettings['type']) ? ' selected' : '' }}>{{ $arSubscribeTypeSetting->value }}</option>
                                         @endforeach
                                     </select>
                                     @error('subscribe_type_id')
@@ -103,7 +106,7 @@
                                         <option disabled="">Выберите:</option>
                                         <option data-cost="0" value="" {{ empty(old('pref_acc_id')) ? ' selected' : '' }}>нет</option>
                                         @foreach ($arSettings['pref_acc'] as $arPrefAccSetting)
-                                            <option data-cost="{{ $arPrefAccSetting->cost }}" value="{{ $arPrefAccSetting->id }}" {{ $arPrefAccSetting->id == old('pref_acc_id') ? ' selected' : '' }}>{{ $arPrefAccSetting->value }}</option>
+                                            <option data-cost="{{ $arPrefAccSetting->cost }}" value="{{ $arPrefAccSetting->id }}" {{ $arPrefAccSetting->id == old('pref_acc_id', $arTildaOrderSettings['pref_acc']) ? ' selected' : '' }}>{{ $arPrefAccSetting->value }}</option>
                                         @endforeach
                                     </select>
                                     @error('pref_acc_id')
@@ -126,7 +129,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Комментарий подписчика</label>
-                                    <textarea class="form-control @error('comment_subscriber') is-invalid @enderror" rows="3" name="comment_subscriber" placeholder="Комментарий подписчика ...">{{ old('comment_subscriber') }}</textarea>
+                                    <textarea class="form-control @error('comment_subscriber') is-invalid @enderror" rows="3" name="comment_subscriber" placeholder="Комментарий подписчика ...">{{ old('comment_subscriber', $arTildaOrderSettings['comment_subscriber']) }}</textarea>
                                     @error('comment_subscriber')
                                     <div id="comment_subscriber_error" class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -157,7 +160,7 @@
                                         <select id="size_top_id" name="size_top_id" class="form-control custom-select">
                                             <option disabled="">Выберите:</option>
                                             @foreach ($arSettings['size_top'] as $arSizeTopSetting)
-                                                <option value="{{ $arSizeTopSetting->id }}" {{ $arSizeTopSetting->id == old('size_top_id') ? ' selected' : '' }}>{{ $arSizeTopSetting->value }}</option>
+                                                <option value="{{ $arSizeTopSetting->id }}" {{ $arSizeTopSetting->id == old('size_top_id', $arTildaOrderSettings['size_top']) ? ' selected' : '' }}>{{ $arSizeTopSetting->value }}</option>
                                             @endforeach
                                         </select>
                                         @error('size_top_id')
@@ -171,7 +174,7 @@
                                         <select id="size_bottom_id" name="size_bottom_id" class="form-control custom-select">
                                             <option disabled="">Выберите:</option>
                                             @foreach ($arSettings['size_bottom'] as $arSizeBottomSetting)
-                                                <option value="{{ $arSizeBottomSetting->id }}" {{ $arSizeBottomSetting->id == old('size_bottom_id') ? ' selected' : '' }}>{{ $arSizeBottomSetting->value }}</option>
+                                                <option value="{{ $arSizeBottomSetting->id }}" {{ $arSizeBottomSetting->id == old('size_bottom_id', $arTildaOrderSettings['size_bottom']) ? ' selected' : '' }}>{{ $arSizeBottomSetting->value }}</option>
                                             @endforeach
                                         </select>
                                         @error('size_bottom_id')
@@ -185,7 +188,7 @@
                                         <select id="size_height_id" name="size_height_id" class="form-control custom-select">
                                             <option disabled="">Выберите:</option>
                                             @foreach ($arSettings['size_height'] as $arSizeHeightSetting)
-                                                <option value="{{ $arSizeHeightSetting->id }}" {{ $arSizeHeightSetting->id == old('size_height_id') ? ' selected' : '' }}>{{ $arSizeHeightSetting->value }}</option>
+                                                <option value="{{ $arSizeHeightSetting->id }}" {{ $arSizeHeightSetting->id == old('size_height_id', $arTildaOrderSettings['size_height']) ? ' selected' : '' }}>{{ $arSizeHeightSetting->value }}</option>
                                             @endforeach
                                         </select>
                                         @error('size_height_id')
@@ -199,7 +202,7 @@
                                         <select id="size_foot_id" name="size_foot_id" class="form-control custom-select">
                                             <option disabled="">Выберите:</option>
                                             @foreach ($arSettings['size_foot'] as $arSizeFootSetting)
-                                                <option value="{{ $arSizeFootSetting->id }}" {{ $arSizeFootSetting->id == old('size_foot_id') ? ' selected' : '' }}>{{ $arSizeFootSetting->value }}</option>
+                                                <option value="{{ $arSizeFootSetting->id }}" {{ $arSizeFootSetting->id == old('size_foot_id', $arTildaOrderSettings['size_foot']) ? ' selected' : '' }}>{{ $arSizeFootSetting->value }}</option>
                                             @endforeach
                                         </select>
                                         @error('size_foot_id')
@@ -256,7 +259,7 @@
                                     <select id="status_id" name="periodicity_id" class="form-control custom-select">
                                         <option disabled="">Выберите:</option>
                                         @foreach ($arSettings['periodicity'] as $arPeriodicitySetting)
-                                            <option value="{{ $arPeriodicitySetting->id }}" {{ $arPeriodicitySetting->id == old('periodicity_id') ? ' selected' : '' }}>{{ $arPeriodicitySetting->value }}</option>
+                                            <option value="{{ $arPeriodicitySetting->id }}" {{ $arPeriodicitySetting->id == old('periodicity_id', $arTildaOrderSettings['periodicity']) ? ' selected' : '' }}>{{ $arPeriodicitySetting->value }}</option>
                                         @endforeach
                                     </select>
                                     @error('periodicity_id')
@@ -287,7 +290,7 @@
                                     <select id="delivery_type_id" name="delivery_type_id" class="form-control custom-select">
                                         <option disabled="">Выберите:</option>
                                         @foreach ($arSettings['delivery_type'] as $arDeliveryTypeSetting)
-                                            <option data-cost="{{ $arDeliveryTypeSetting->cost }}" value="{{ $arDeliveryTypeSetting->id }}" {{ $arDeliveryTypeSetting->id == old('delivery_type_id') ? ' selected' : '' }}>{{ $arDeliveryTypeSetting->value }}</option>
+                                            <option data-cost="{{ $arDeliveryTypeSetting->cost }}" value="{{ $arDeliveryTypeSetting->id }}" {{ $arDeliveryTypeSetting->id == old('delivery_type_id', $arTildaOrderSettings['delivery_type']) ? ' selected' : '' }}>{{ $arDeliveryTypeSetting->value }}</option>
                                         @endforeach
                                     </select>
                                     @error('delivery_type_id')
@@ -296,7 +299,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Адрес доставки</label>
-                                    <textarea id="delivery_addr" class="form-control @error('delivery_addr') is-invalid @enderror" rows="3" name="delivery_addr" placeholder="Адрес доставки ..." required="required">{{ old('delivery_addr') }}</textarea>
+                                    <textarea id="delivery_addr" class="form-control @error('delivery_addr') is-invalid @enderror" rows="3" name="delivery_addr" placeholder="Адрес доставки ..." required="required">{{ old('delivery_addr', $arTildaOrderSettings['delivery_addr']) }}</textarea>
                                     @error('delivery_addr')
                                     <div id="delivery_addr_error" class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -306,6 +309,9 @@
 
                     </div>
                 </div>
+                @if (!empty($arTildaOrderSettings['id']))
+                <input type="hidden" name="subscribe_tilda_id" value="{{ $arTildaOrderSettings['id'] }}"/>
+                @endif
                 <input id="main_form_submit" type="submit" class="d-none">
             </form>
         </section>

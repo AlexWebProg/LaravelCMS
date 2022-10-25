@@ -45,14 +45,19 @@ class IndexJSONController extends BaseController
                 ];
             } else {
                 $arSubscribe['pref_acc'] = [
-                    'display' => '<div class="rowLimit">'.$subscribe->prefAccSetting->value.'</div>',
+                    'display' => $subscribe->prefAccSetting->value,
                     'filter' => '+'
                 ];
             }
             $i = 0;
             foreach ($arPlannedDataLine as $arPlannedSendMonth) {
                 $i++;
-                $arSubscribe['m' . $i] = $subscribe->estimated_sends_month_days[$arPlannedSendMonth['int']];
+                $strDays = $subscribe->estimated_sends_month_days[$arPlannedSendMonth['int']];
+                if ($strDays !== '+' and count($subscribe->subscribeConsistByMonth($arPlannedSendMonth['int'])) ) {
+                    $strDays .= ', сборка';
+                }
+                $arSubscribe['m' . $i] = $strDays;
+                unset($strDays);
             }
             unset($i);
             $arSubscribe['type'] = [

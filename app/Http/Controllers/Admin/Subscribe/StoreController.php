@@ -4,13 +4,18 @@ namespace App\Http\Controllers\Admin\Subscribe;
 
 use App\Http\Requests\Admin\Subscribe\StoreRequest;
 use App\Models\Subscribe;
-use App\Models\Subscriber;
+use App\Models\SubscribeTilda;
 
 class StoreController extends BaseController
 {
     public function __invoke(StoreRequest $request)
     {
         $data = $request->validated();
+        // Если был заказ из Тильды, помечаем его обработанным
+        if (!empty($data['subscribe_tilda_id'])) {
+            SubscribeTilda::where('id',$data['subscribe_tilda_id'])->update(['processed' => 1]);
+            unset($data['subscribe_tilda_id']);
+        }
         // Создаём подписку
         $subscribe = Subscribe::create($data);
         if (!empty($subscribe->id)) {

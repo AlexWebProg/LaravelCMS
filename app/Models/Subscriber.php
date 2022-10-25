@@ -51,11 +51,17 @@ class Subscriber extends Model
 
     // Получает всех подписчиков для общего списка
     public static function getAllSubscribers(){
-        return self::select('loncq_user.*', DB::raw("group_concat(loncq_subscribe_settings.value) as subscribe_names"))
+        return self::select(
+            'loncq_user.user_id',
+            'loncq_user.name',
+            'loncq_user.email',
+            'loncq_user.phone',
+            DB::raw("group_concat(loncq_subscribe_settings.value) as subscribe_names")
+        )
             ->from('loncq_user')
             ->leftJoin('loncq_user_subscribes', 'loncq_user_subscribes.user_id', 'loncq_user.user_id')
             ->leftJoin('loncq_subscribe_settings', 'loncq_subscribe_settings.id', 'loncq_user_subscribes.subscribe_type_id')
-            ->groupBy('loncq_user.user_id')
+            ->groupBy('loncq_user.user_id','loncq_user.name','loncq_user.email','loncq_user.phone')
             ->where('loncq_user.subscriber',1)
             ->get();
     }
